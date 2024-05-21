@@ -155,7 +155,7 @@
 
         /* Main Content Styles */
         .container {
-            margin-left: 0.5cm;
+            margin-left: 0cm;
         }
 
         /* Sections Styles */
