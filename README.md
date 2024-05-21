@@ -411,7 +411,6 @@ plot(res_KODAMA_UMAP, pch = 21, bg = labels, main = "KODAMA_UMAP")
 <!-- Section: Example 2 - GEOMx dataset 1 -->
 <section id="example-geomx-dataset" class="data-section">
     <div class="container">
-        <h2>Example 2: GEOMx dataset 1</h2>
         
         <p>The GeoMx Digital Spatial Profiler (DSP) is a platform for capturing spatially resolved high-plex gene (or protein) expression data from tissue <a href="https://pubmed.ncbi.nlm.nih.gov/32393914/">Merritt et al., 2020</a>. In particular, formalin-fixed paraffin-embedded (FFPE) or fresh-frozen (FF) tissue sections are stained with barcoded in-situ hybridization probes that bind to endogenous mRNA transcripts. GeoMx kidney dataset has been created with the human whole transcriptome atlas (WTA) assay. The dataset includes 4 diabetic kidney disease (DKD) and 3 healthy kidney tissue samples. Regions of interest (ROI) were spatially profiled to focus on two different kidney structures: tubules or glomeruli. One glomerular ROI contains the entirety of a single glomerulus. Each tubular ROI contains multiple tubules that were segmented into distal (PanCK+) and proximal (PanCK-) tubule areas of illumination (AOI). The preprocessing workflow is described <a href="https://www.bioconductor.org/packages/release/workflows/vignettes/GeoMxWorkflows/inst/doc/GeomxTools_RNA-NGS_Analysis.html">here</a>. An imputing procedure was added to the original <a href="https://www.bioconductor.org/packages/release/workflows/vignettes/GeoMxWorkflows/inst/doc/GeomxTools_RNA-NGS_Analysis.R">R script</a>.</p>
         <h2>Tutorial</h2>
@@ -508,154 +507,167 @@ grid.arrange(plot5, plot6, ncol=2)
             <div class="container">
     <h2>Example 3: GeoMx dataset2</h2>
 
-## Example 3: GeoMx dataset2
-This dataset represent the quantitate transcript and protein abundance in spatially distinct regions of metastic prostate cancer tissue retreived by GeoMx Digital Spatial Profiler (DSP)  [Brady et al., 2021](https://www.nature.com/articles/s41467-021-21615-4). This study entails leaving 141 ROIs from 53 metastases (26 patients). 
-                                                                                                                                           
-### Tutorial
-#### Install required packages
- ```
+<section id="Example 3: GeoMx dataset2">
+    <div class="container">
+        <h2>Example 3: GeoMx dataset2</h2>
+
+        <h2>Example 3: GeoMx dataset2</h2>
+        <p>This dataset represents the quantitative transcript and protein abundance in spatially distinct regions of metastatic prostate cancer tissue retrieved by GeoMx Digital Spatial Profiler (DSP) [<a href="https://www.nature.com/articles/s41467-021-21615-4">Brady et al., 2021</a>]. This study entails leaving 141 ROIs from 53 metastases (26 patients).</p>
+        
+        <h3>Tutorial</h3>
+        
+        <h4>Install required packages</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
 library(KODAMA)
 library(readxl)
 library(tidyr)
 library(ggplot2)
 library(gridExtra)
-```
-#### Ulpoad data
-```
+        </code></pre>
+
+        <h4>Upload data</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
 dat3 <- as.data.frame(read.csv("Supplementary_Data_File_3.txt", header=TRUE, sep = "\t", dec = "."))
 dat4 <- as.data.frame(read.csv("Supplementary_Data_File_4.txt", header=TRUE, sep = "\t", dec = "."))
-dat5<- as.data.frame(read_excel("41467_2021_21615_MOESM5_ESM.xlsx", skip = 1))
-```
-### Data preprocessing
-
-```
+dat5 <- as.data.frame(read_excel("41467_2021_21615_MOESM5_ESM.xlsx", skip = 1))
+        </code></pre>
+        
+        <h3>Data preprocessing</h3>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
 rownames(dat5) <- dat5[,"Sample_ID"]
-sel <- c( "Gene", "Negative_Normalized", "Sample_ID")
+sel <- c("Gene", "Negative_Normalized", "Sample_ID")
 g <- dat3[,sel]
-g2 <- as.data.frame(g |> pivot_wider(names_from = Gene, values_from =Negative_Normalized ))
+g2 <- as.data.frame(g |> pivot_wider(names_from = Gene, values_from = Negative_Normalized))
 rownames(g2) <- g2$Sample_ID
 g2 <- g2[,-1]
-sel=intersect(rownames(g2),rownames(dat5))
-g3=g2[sel,]
-metadata=dat5[sel,]
-sel <- c( "protein", "count_ngs_norm", "Sample_ID")
-Sample_ID=paste(dat4$tissue_id,dat4$punch,sep="_")
-p=data.frame(Sample_ID=Sample_ID,count_ngs_norm=dat4$count_ngs_norm,Protein=dat4$Protein)
-p=p[!is.na(dat4$tissue_id) & !is.na(dat4$punch),]
-p2 <- as.data.frame(p |> pivot_wider(names_from = Protein, values_from =count_ngs_norm ))
+sel <- intersect(rownames(g2), rownames(dat5))
+g3 <- g2[sel,]
+metadata <- dat5[sel,]
+sel <- c("protein", "count_ngs_norm", "Sample_ID")
+Sample_ID <- paste(dat4$tissue_id, dat4$punch, sep = "_")
+p <- data.frame(Sample_ID = Sample_ID, count_ngs_norm = dat4$count_ngs_norm, Protein = dat4$Protein)
+p <- p[!is.na(dat4$tissue_id) & !is.na(dat4$punch),]
+p2 <- as.data.frame(p |> pivot_wider(names_from = Protein, values_from = count_ngs_norm))
 rownames(p2) <- p2$Sample_ID
-sel=intersect(rownames(g2),rownames(dat5))
-p3=p2[sel,]
-``` 
-#### Run MDS
-```
-res_MDS=cmdscale(dist(g3))
+sel <- intersect(rownames(g2), rownames(dat5))
+p3 <- p2[sel,]
+        </code></pre>
+
+        <h4>Run MDS</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+res_MDS <- cmdscale(dist(g3))
 metadata[, c("MDS1", "MDS2")] <- res_MDS[, c(1,2)]
-```
-#### run tSNE
-```
+        </code></pre>
+
+        <h4>Run tSNE</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
 set.seed(42) # set the seed for tSNE as well
 tsne_out <- Rtsne(g3, perplexity = 10)
 metadata[, c("tSNE1", "tSNE2")] <- tsne_out$Y[, c(1,2)]
-```
-#### run UMAP
-```
-custom.settings = umap.defaults
-custom.settings$n_neighbors=10
-umap_out <- umap(g3,config = custom.settings)
+        </code></pre>
+
+        <h4>Run UMAP</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+custom.settings <- umap.defaults
+custom.settings$n_neighbors <- 10
+umap_out <- umap(g3, config = custom.settings)
 metadata[, c("UMAP1", "UMAP2")] <- umap_out$layout[, c(1,2)]
-```
-#### run KODAMA
-```
-kk=KODAMA.matrix(g3)
-res= KODAMA.visualization(kk)
-res1= KODAMA.visualization(kk,method = "MDS")
-custom.settings$perplexity=10
-custom.settings = Rtsne.defaults
-res2= KODAMA.visualization(kk,method = "t-SNE", config = custom.settings)
-custom.settings = umap.defaults
-custom.settings$n_neighbors=10
-res3= KODAMA.visualization(kk,method = "UMAP", config = custom.settings)
+        </code></pre>
+
+        <h4>Run KODAMA</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+kk <- KODAMA.matrix(g3)
+res <- KODAMA.visualization(kk)
+res1 <- KODAMA.visualization(kk, method = "MDS")
+custom.settings$perplexity <- 10
+custom.settings <- Rtsne.defaults
+res2 <- KODAMA.visualization(kk, method = "t-SNE", config = custom.settings)
+custom.settings <- umap.defaults
+custom.settings$n_neighbors <- 10
+res3 <- KODAMA.visualization(kk, method = "UMAP", config = custom.settings)
 metadata[, c("KODAMA1.MDS", "KODAMA2.MDS")] <- res1
 metadata[, c("KODAMA1.tSNE", "KODAMA2.tSNE")] <- res2
 metadata[, c("KODAMA1.UMAP", "KODAMA2.UMAP")] <- res3
-```
-#### MDS vs KODAMA.MDS
-```
-Histology=as.factor(metadata$`Histology category`)
-plot1=ggplot(metadata, aes(x = MDS1, y = MDS2, color = class)) + geom_point(aes(fill=Histology), colour="black",pch=21, size=4) + theme_bw()
-plot2=ggplot(pData(target_demoData), aes(x = KODAMA1.MDS, y = KODAMA2.MDS, color = class)) + geom_point(aes(fill=Histology), colour="black",pch=21, size=4) + theme_bw()
-grid.arrange(plot1, plot2, ncol=2)
-```
-<p>
-  <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/MDS%20dat2.png" alt="hello-light" height="500" width="700" />
-  </p>
-</p>
+        </code></pre>
 
-#### tSNA vs KODAMA.tSNE
-```
-plot3=ggplot(metadata, aes(x = tSNE1, y = tSNE2, color = class)) + geom_point(aes(fill=Histology), colour="black",pch=21, size=4) + theme_bw()
-plot4=ggplot(metadata, aes(x = KODAMA1.tSNE, color = class)) + geom_point(aes(fill=Histology), colour="black",pch=21, size=4) + theme_bw()
-grid.arrange(plot3, plot4, ncol=2)
-```
-<p>
-  <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/TSNE%20dat2.png" alt="hello-light" height="500" width="700" />
-  </p>
-</p>
+        <h4>MDS vs KODAMA.MDS</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+Histology <- as.factor(metadata$`Histology category`)
+plot1 <- ggplot(metadata, aes(x = MDS1, y = MDS2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+plot2 <- ggplot(metadata, aes(x = KODAMA1.MDS, y = KODAMA2.MDS, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+grid.arrange(plot1, plot2, ncol = 2)
+        </code></pre>
 
-#### UMAP vs KODAM.UMAP
-```
-plot5=ggplot(metadata, aes(x = UMAP1, y = UMAP2, color = class)) + geom_point(aes(fill=Histology), colour="black",pch=21, size=4) + theme_bw()
-plot6=ggplot(metadata, aes(x = KODAMA1.UMAP, color = class)) + geom_point(aes(fill=Histology), colour="black",pch=21, size=4) + theme_bw()
-grid.arrange(plot5, plot6, ncol=2)
-```
-<p>
-  <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/UMAP%20dat2.png" alt="hello-light" height="500" width=700" />
-  </p>
-</p>                  
+        <p align="center">
+            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/MDS%20dat2.png" alt="MDS vs KODAMA.MDS" height="500" width="700">
+        </p>
 
-#### KODAMA.umap clustering according to Androgen receptor(AR)
+        <h4>tSNE vs KODAMA.tSNE</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+plot3 <- ggplot(metadata, aes(x = tSNE1, y = tSNE2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+plot4 <- ggplot(metadata, aes(x = KODAMA1.tSNE, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+grid.arrange(plot3, plot4, ncol = 2)
+        </code></pre>
 
-```
-values=as.numeric(p3$AR)
-v=quantile(values,probs=c(0.2,0.4,0.6,0.8),na.rm = TRUE)
-AR.protein=findInterval(values, v)
-plot7=ggplot(metadata,
-             aes(x = KODAMA1umap, y = KODAMA2umap)) +
-  geom_point(aes(fill=AR.protein), 
-             colour="black",pch=21, size=4) +
+        <p align="center">
+            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/TSNE%20dat2.png" alt="tSNE vs KODAMA.tSNE" height="500" width="700">
+        </p>
+
+        <h4>UMAP vs KODAMA.UMAP</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+plot5 <- ggplot(metadata, aes(x = UMAP1, y = UMAP2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+plot6 <- ggplot(metadata, aes(x = KODAMA1.UMAP, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+grid.arrange(plot5, plot6, ncol = 2)
+        </code></pre>
+
+        <p align="center">
+            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/UMAP%20dat2.png" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
+        </p>
+
+        <h4>KODAMA.umap clustering according to Androgen receptor(AR)</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+values <- as.numeric(p3$AR)
+v <- quantile(values, probs = c(0.2, 0.4, 0.6, 0.8), na.rm = TRUE)
+AR.protein <- findInterval(values, v)
+plot7 <- ggplot(metadata, aes(x = KODAMA1umap, y = KODAMA2umap)) +
+  geom_point(aes(fill = AR.protein), colour = "black", pch = 21, size = 4) +
   theme_bw()
-grid.arrange(plot7, ncol=1)
-```
+grid.arrange(plot7, ncol = 1)
+        </code></pre>
 
-<p>
-  <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/AR.png" alt="hello-light" height="500" width=700" />
-  </p>
-</p> 
-                                                                                                                    
-#### KODAMA.umap clustering according to CD68
+        <p align="center">
+            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/AR.png" alt="KODAMA.umap clustering according to Androgen receptor(AR)" height="500" width="700">
+        </p>
 
-```                                                                                                                                                                                 
-values=as.numeric(p3$CD68)
-v=quantile(values,probs=c(0.2,0.4,0.6,0.8),na.rm = TRUE)
-CD68=findInterval(values, v)
-plot7=ggplot(metadata,
-             aes(x = KODAMA1umap, y = KODAMA2umap)) +
-  geom_point(aes(fill=CD68), 
-             colour="black",pch=21, size=4) +
+        <h4>KODAMA.umap clustering according to CD68</h4>
+        <button onclick="copyCode()">Copy code</button>
+        <pre><code>
+values <- as.numeric(p3$CD68)
+v <- quantile(values, probs = c(0.2, 0.4, 0.6, 0.8), na.rm = TRUE)
+CD68 <- findInterval(values, v)
+plot7 <- ggplot(metadata, aes(x = KODAMA1umap, y = KODAMA2umap)) +
+  geom_point(aes(fill = CD68), colour = "black", pch = 21, size = 4) +
   theme_bw()
-grid.arrange(plot7, ncol=1)
-```
-                           
-<p>
-  <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/CD68.png" alt="hello-light" height="400" width=700" />
-  </p>
-</p>                                                                                                                                 
+grid.arrange(plot7, ncol = 1)
+        </code></pre>
+
+        <p align="center">
+            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/CD68.png" alt="KODAMA.umap clustering according to CD68" height="400" width="700">
+        </p>
+    </div>
+</section>
+                                                                                                                                
     <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
@@ -719,29 +731,22 @@ sidebarLinks.forEach(function (link) {
             handleItemClick(item);
             addBackgroundOnHover(item);
         });
-       
-    var copyButton = document.getElementById('copyButton');
-    var codeBlock = document.querySelector('.code-container pre code');
+        // JavaScript for copying code and adding hover effect
+        function copyCode() {
+            var rCode = document.getElementById('rCode');
+            var codeText = rCode.innerText;
+            navigator.clipboard.writeText(codeText);
+        }
 
-    document.getElementById('copyButton1').addEventListener('click', function() {
-    var codeBlock = document.getElementById('codeBlock1');
-    var textToCopy = codeBlock.querySelector('code').innerText;
-    navigator.clipboard.writeText(textToCopy)
-        .then(function() {
-            // Changement de couleur du bouton pour indiquer que la copie a réussi
-            document.getElementById('copyButton1').classList.add('copied');
-            setTimeout(function() {
-                document.getElementById('copyButton1').classList.remove('copied');
+        var copyButton = document.getElementById('copyButton');
+        copyButton.addEventListener('click', function () {
+            copyCode();
+            copyButton.classList.add('copied');
+            setTimeout(function () {
+                copyButton.classList.remove('copied');
             }, 1000);
-        })
-        .catch(function(err) {
-            console.error('Failed to copy: ', err);
         });
-});
-
-         </script>
+    </script>
 </body>
 
 </html>
-
-    
