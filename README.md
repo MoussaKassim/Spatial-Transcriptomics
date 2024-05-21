@@ -510,7 +510,7 @@ grid.arrange(plot5, plot6, ncol=2)
         
         <h3>Tutorial</h3>
         
-        <h4>Install required packages</h4>
+        <h2>Install required packages</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 library(KODAMA)
@@ -520,7 +520,7 @@ library(ggplot2)
 library(gridExtra)
         </code></pre>
 
-        <h4>Upload data</h4>
+        <h2>Upload data</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 dat3 <- as.data.frame(read.csv("Supplementary_Data_File_3.txt", header=TRUE, sep = "\t", dec = "."))
@@ -550,14 +550,14 @@ sel <- intersect(rownames(g2), rownames(dat5))
 p3 <- p2[sel,]
         </code></pre>
 
-        <h4>Run MDS</h4>
+        <h2>Run MDS</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 res_MDS <- cmdscale(dist(g3))
 metadata[, c("MDS1", "MDS2")] <- res_MDS[, c(1,2)]
         </code></pre>
 
-        <h4>Run tSNE</h4>
+        <h2>Run tSNE</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 set.seed(42) # set the seed for tSNE as well
@@ -565,7 +565,7 @@ tsne_out <- Rtsne(g3, perplexity = 10)
 metadata[, c("tSNE1", "tSNE2")] <- tsne_out$Y[, c(1,2)]
         </code></pre>
 
-        <h4>Run UMAP</h4>
+        <h2>Run UMAP</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 custom.settings <- umap.defaults
@@ -574,7 +574,7 @@ umap_out <- umap(g3, config = custom.settings)
 metadata[, c("UMAP1", "UMAP2")] <- umap_out$layout[, c(1,2)]
         </code></pre>
 
-        <h4>Run KODAMA</h4>
+        <h2>Run KODAMA</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 kk <- KODAMA.matrix(g3)
@@ -591,7 +591,7 @@ metadata[, c("KODAMA1.tSNE", "KODAMA2.tSNE")] <- res2
 metadata[, c("KODAMA1.UMAP", "KODAMA2.UMAP")] <- res3
         </code></pre>
 
-        <h4>MDS vs KODAMA.MDS</h4>
+        <h2>MDS vs KODAMA.MDS</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 Histology <- as.factor(metadata$`Histology category`)
@@ -604,7 +604,7 @@ grid.arrange(plot1, plot2, ncol = 2)
             <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/MDS%20dat2.png" alt="MDS vs KODAMA.MDS" height="500" width="700">
         </p>
 
-        <h4>tSNE vs KODAMA.tSNE</h4>
+        <h2>tSNE vs KODAMA.tSNE</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 plot3 <- ggplot(metadata, aes(x = tSNE1, y = tSNE2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
@@ -616,7 +616,7 @@ grid.arrange(plot3, plot4, ncol = 2)
             <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/TSNE%20dat2.png" alt="tSNE vs KODAMA.tSNE" height="500" width="700">
         </p>
 
-        <h4>UMAP vs KODAMA.UMAP</h4>
+        <h2>UMAP vs KODAMA.UMAP</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 plot5 <- ggplot(metadata, aes(x = UMAP1, y = UMAP2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
@@ -628,7 +628,7 @@ grid.arrange(plot5, plot6, ncol = 2)
             <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/UMAP%20dat2.png" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
         </p>
 
-        <h4>KODAMA.umap clustering according to Androgen receptor(AR)</h4>
+        <h2>KODAMA.umap clustering according to Androgen receptor(AR)</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 values <- as.numeric(p3$AR)
@@ -644,7 +644,7 @@ grid.arrange(plot7, ncol = 1)
             <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/AR.png" alt="KODAMA.umap clustering according to Androgen receptor(AR)" height="500" width="700">
         </p>
 
-        <h4>KODAMA.umap clustering according to CD68</h4>
+        <h2>KODAMA.umap clustering according to CD68</h2>
         <button onclick="copyCode()">Copy code</button>
         <pre><code>
 values <- as.numeric(p3$CD68)
