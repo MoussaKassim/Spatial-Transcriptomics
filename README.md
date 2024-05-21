@@ -505,12 +505,6 @@ grid.arrange(plot5, plot6, ncol=2)
 </section>
 <section id="Example 3: GeoMx dataset2">
             <div class="container">
-    <h2>Example 3: GeoMx dataset2</h2>
-
-<section id="Example 3: GeoMx dataset2">
-    <div class="container">
-        <h2>Example 3: GeoMx dataset2</h2>
-
         <h2>Example 3: GeoMx dataset2</h2>
         <p>This dataset represents the quantitative transcript and protein abundance in spatially distinct regions of metastatic prostate cancer tissue retrieved by GeoMx Digital Spatial Profiler (DSP) [<a href="https://www.nature.com/articles/s41467-021-21615-4">Brady et al., 2021</a>]. This study entails leaving 141 ROIs from 53 metastases (26 patients).</p>
         
