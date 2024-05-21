@@ -155,8 +155,9 @@
 
         /* Main Content Styles */
         .container {
-            margin-left: 0cm;
-        }
+    margin-left: 2cm; /* Ajuster la marge à gauche */
+    margin-top: 5cm; /* Déplacer vers le bas */
+}
 
         /* Sections Styles */
         .data-section {
