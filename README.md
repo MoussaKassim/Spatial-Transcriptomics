@@ -114,7 +114,7 @@
             position: fixed;
             top: 2.9cm;
             bottom: 2cm;
-            left: 7.5cm;
+            left: 4.5cm;
             width: 180%;
             max-width: 260px;
             max-height: 19%;
