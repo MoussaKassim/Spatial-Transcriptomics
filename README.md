@@ -155,7 +155,7 @@
 
         /* Main Content Styles */
         .container {
-            margin-left: 0cm;
+            margin-left: 1.5cm;
         }
 
         /* Sections Styles */
@@ -519,40 +519,42 @@ grid.arrange(plot5, plot6, ncol = 2)
     </div>
 </section>
 
-<section id="Example 3: GeoMx dataset2">
-            <div class="container">
+<section id="Example_3_GeoMx_dataset2" class="data-section">
+    <div class="container">
         <h3>Example 3: GeoMx dataset2</h3>
         <p>This dataset represents the quantitative transcript and protein abundance in spatially distinct regions of metastatic prostate cancer tissue retrieved by GeoMx Digital Spatial Profiler (DSP) [<a href="https://www.nature.com/articles/s41467-021-21615-4">Brady et al., 2021</a>]. This study entails leaving 141 ROIs from 53 metastases (26 patients).</p>
-        </section>
-        <section id="Tutorial" class="data-section">
+    </div>
+</section>
+<section id="Tutorial" class="data-section">
     <div class="container">
         <h3>Tutorial</h3>
         
-        <h1>Install required packages</h1>
+        <h2>Install required packages</h2>
         <div class="code-container">
             <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+            <pre><code>
 library(KODAMA)
 library(readxl)
 library(tidyr)
 library(ggplot2)
 library(gridExtra)
-        </code></pre>
+            </code></pre>
         </div>
 
         <h3>Upload data</h3>
         <div class="code-container">
             <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+            <pre><code>
 dat3 <- as.data.frame(read.csv("Supplementary_Data_File_3.txt", header=TRUE, sep = "\t", dec = "."))
 dat4 <- as.data.frame(read.csv("Supplementary_Data_File_4.txt", header=TRUE, sep = "\t", dec = "."))
 dat5 <- as.data.frame(read_excel("41467_2021_21615_MOESM5_ESM.xlsx", skip = 1))
-        </code></pre>
+            </code></pre>
         </div>
+        
         <h3>Data preprocessing</h3>
         <div class="code-container">
             <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+            <pre><code>
 rownames(dat5) <- dat5[,"Sample_ID"]
 sel <- c("Gene", "Negative_Normalized", "Sample_ID")
 g <- dat3[,sel]
@@ -570,44 +572,49 @@ p2 <- as.data.frame(p |> pivot_wider(names_from = Protein, values_from = count_n
 rownames(p2) <- p2$Sample_ID
 sel <- intersect(rownames(g2), rownames(dat5))
 p3 <- p2[sel,]
-        </code></pre>
-</div>
+            </code></pre>
+        </div>
+        
         <h3>Run MDS</h3>
         <div class="code-container">
             <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+            <pre><code>
 res_MDS <- cmdscale(dist(g3))
 metadata[, c("MDS1", "MDS2")] <- res_MDS[, c(1,2)]
-        </code></pre>
-</div>
+            </code></pre>
+        </div>
+        
         <h3>Run tSNE</h3>
         <div class="code-container">
             <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+            <pre><code>
 set.seed(42) # set the seed for tSNE as well
 tsne_out <- Rtsne(g3, perplexity = 10)
 metadata[, c("tSNE1", "tSNE2")] <- tsne_out$Y[, c(1,2)]
-        </code></pre>
-</div>
+            </code></pre>
+        </div>
+</section>
+
         <h3>Run UMAP</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
 custom.settings <- umap.defaults
 custom.settings$n_neighbors <- 10
 umap_out <- umap(g3, config = custom.settings)
 metadata[, c("UMAP1", "UMAP2")] <- umap_out$layout[, c(1,2)]
-        </code></pre>
+    </code></pre>
 </div>
-        <h3>Run KODAMA</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+
+<h3>Run KODAMA</h3>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
 kk <- KODAMA.matrix(g3)
 res <- KODAMA.visualization(kk)
 res1 <- KODAMA.visualization(kk, method = "MDS")
-custom.settings$perplexity <- 10
 custom.settings <- Rtsne.defaults
+custom.settings$perplexity <- 10
 res2 <- KODAMA.visualization(kk, method = "t-SNE", config = custom.settings)
 custom.settings <- umap.defaults
 custom.settings$n_neighbors <- 10
@@ -615,84 +622,92 @@ res3 <- KODAMA.visualization(kk, method = "UMAP", config = custom.settings)
 metadata[, c("KODAMA1.MDS", "KODAMA2.MDS")] <- res1
 metadata[, c("KODAMA1.tSNE", "KODAMA2.tSNE")] <- res2
 metadata[, c("KODAMA1.UMAP", "KODAMA2.UMAP")] <- res3
-        </code></pre>
+    </code></pre>
 </div>
-        <h3>MDS vs KODAMA.MDS</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+
+<h3>MDS vs KODAMA.MDS</h3>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
 Histology <- as.factor(metadata$`Histology category`)
 plot1 <- ggplot(metadata, aes(x = MDS1, y = MDS2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
 plot2 <- ggplot(metadata, aes(x = KODAMA1.MDS, y = KODAMA2.MDS, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
 grid.arrange(plot1, plot2, ncol = 2)
-        </code></pre>
+    </code></pre>
 </div>
-        <p align="center">
-            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/MDS%20dat2.png" alt="MDS vs KODAMA.MDS" height="500" width="700">
-        </p>
 
-        <h3>tSNE vs KODAMA.tSNE</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
-plot3 <- ggplot(metadata, aes(x = tSNE1, y = tSNE2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
-plot4 <- ggplot(metadata, aes(x = KODAMA1.tSNE, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+<p align="center">
+    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/MDS%20dat2.png" alt="MDS vs KODAMA.MDS" height="500" width="700">
+</p>
+
+       <h3>tSNE vs KODAMA.tSNE</h3>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
+plot3 <- ggplot(metadata, aes(x = tSNE1, y = tSNE2, color = class)) + 
+         geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + 
+         theme_bw()
+plot4 <- ggplot(metadata, aes(x = KODAMA1.tSNE, y = KODAMA2.tSNE, color = class)) + 
+         geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + 
+         theme_bw()
 grid.arrange(plot3, plot4, ncol = 2)
-        </code></pre>
+    </code></pre>
 </div>
-        <p align="center">
-            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/TSNE%20dat2.png" alt="tSNE vs KODAMA.tSNE" height="500" width="700">
-        </p>
+<p align="center">
+    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/TSNE%20dat2.png" alt="tSNE vs KODAMA.tSNE" height="500" width="700">
+</p>
 
-        <h3>UMAP vs KODAMA.UMAP</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
-plot5 <- ggplot(metadata, aes(x = UMAP1, y = UMAP2, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
-plot6 <- ggplot(metadata, aes(x = KODAMA1.UMAP, color = class)) + geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + theme_bw()
+<h3>UMAP vs KODAMA.UMAP</h3>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
+plot5 <- ggplot(metadata, aes(x = UMAP1, y = UMAP2, color = class)) + 
+         geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + 
+         theme_bw()
+plot6 <- ggplot(metadata, aes(x = KODAMA1.UMAP, y = KODAMA2.UMAP, color = class)) + 
+         geom_point(aes(fill = Histology), colour = "black", pch = 21, size = 4) + 
+         theme_bw()
 grid.arrange(plot5, plot6, ncol = 2)
-        </code></pre>
+    </code></pre>
 </div>
-        <p align="center">
-            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/UMAP%20dat2.png" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
-        </p>
+<p align="center">
+    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/UMAP%20dat2.png" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
+</p>
 
-        <h3>KODAMA.umap clustering according to Androgen receptor(AR)</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+<h3>KODAMA.umap clustering according to Androgen receptor(AR)</h3>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
 values <- as.numeric(p3$AR)
 v <- quantile(values, probs = c(0.2, 0.4, 0.6, 0.8), na.rm = TRUE)
 AR.protein <- findInterval(values, v)
-plot7 <- ggplot(metadata, aes(x = KODAMA1umap, y = KODAMA2umap)) +
+plot7 <- ggplot(metadata, aes(x = KODAMA1.UMAP, y = KODAMA2.UMAP)) +
   geom_point(aes(fill = AR.protein), colour = "black", pch = 21, size = 4) +
   theme_bw()
 grid.arrange(plot7, ncol = 1)
-        </code></pre>
+    </code></pre>
 </div>
-        <p align="center">
-            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/AR.png" alt="KODAMA.umap clustering according to Androgen receptor(AR)" height="500" width="700">
-        </p>
+<p align="center">
+    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/AR.png" alt="KODAMA.umap clustering according to Androgen receptor(AR)" height="500" width="700">
+</p>
 
-        <h3>KODAMA.umap clustering according to CD68</h3>
-        <div class="code-container">
-            <button class="copyButton"><i class="far fa-copy"></i></button>
-        <pre><code>
+<h3>KODAMA.umap clustering according to CD68</h3>
+<div class="code-container">
+    <button class="copyButton"><i class="far fa-copy"></i></button>
+    <pre><code>
 values <- as.numeric(p3$CD68)
 v <- quantile(values, probs = c(0.2, 0.4, 0.6, 0.8), na.rm = TRUE)
 CD68 <- findInterval(values, v)
-plot7 <- ggplot(metadata, aes(x = KODAMA1umap, y = KODAMA2umap)) +
+plot8 <- ggplot(metadata, aes(x = KODAMA1.UMAP, y = KODAMA2.UMAP)) +
   geom_point(aes(fill = CD68), colour = "black", pch = 21, size = 4) +
   theme_bw()
-grid.arrange(plot7, ncol = 1)
-        </code></pre>
+grid.arrange(plot8, ncol = 1)
+    </code></pre>
 </div>
-        <p align="center">
-            <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/CD68.png" alt="KODAMA.umap clustering according to CD68" height="400" width="700">
-        </p>
-    </div>
-</section>
-                                                                                                                                
+<p align="center">
+    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/CD68.png" alt="KODAMA.umap clustering according to CD68" height="400" width="700">
+</p>
+        </section>                                                                                                       
    <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
