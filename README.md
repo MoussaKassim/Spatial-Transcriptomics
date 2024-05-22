@@ -487,7 +487,7 @@ grid.arrange(plot1, plot2, ncol = 2)
 </code></pre>
             </div>
             <p align="center">
-                <img src="chemin/vers/votre/image/MDS%20geomx.png" alt="MDS vs KODAMA.MDS" height="500" width="700">
+                <img src="https://gist.github.com/assets/168087487/cfa37251-c6a3-43a9-8781-735378f56d62" alt="MDS vs KODAMA.MDS" height="500" width="700">
             </p>
         </div>
         <div class="code-block">
@@ -500,7 +500,7 @@ grid.arrange(plot3, plot4, ncol = 2)
 </code></pre>
             </div>
             <p align="center">
-                <img src="chemin/vers/votre/image/tsne%20geomx.png" alt="tSNA vs KODAMA.tSNE" height="500" width="700">
+                <img src="https://gist.github.com/assets/168087487/75978f19-7ba8-4659-ab8e-6277c9b2e8d1" alt="tSNA vs KODAMA.tSNE" height="500" width="700">
             </p>
         </div>
         <div class="code-block">
@@ -513,7 +513,7 @@ grid.arrange(plot5, plot6, ncol = 2)
 </code></pre>
             </div>
             <p align="center">
-                <img src="chemin/vers/votre/image/umap%20geomx.png" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
+                <img src="https://gist.github.com/assets/168087487/15991592-d889-45d6-b899-a30496999f73" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
             </p>
         </div>
     </div>
