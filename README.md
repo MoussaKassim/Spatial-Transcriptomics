@@ -637,7 +637,7 @@ grid.arrange(plot1, plot2, ncol = 2)
 </div>
 
 <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/MDS%20dat2.png" alt="MDS vs KODAMA.MDS" height="500" width="700">
+    <img src="https://gist.github.com/assets/168087487/618a8790-0136-4c8a-9894-539f90a14f36" alt="MDS vs KODAMA.MDS" height="500" width="700">
 </p>
 
        <h3>tSNE vs KODAMA.tSNE</h3>
@@ -654,7 +654,7 @@ grid.arrange(plot3, plot4, ncol = 2)
     </code></pre>
 </div>
 <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/TSNE%20dat2.png" alt="tSNE vs KODAMA.tSNE" height="500" width="700">
+    <img src="https://gist.github.com/assets/168087487/fcd21edd-2565-419a-a8dc-58c30b6cee88" alt="tSNE vs KODAMA.tSNE" height="500" width="700">
 </p>
 
 <h3>UMAP vs KODAMA.UMAP</h3>
@@ -671,7 +671,7 @@ grid.arrange(plot5, plot6, ncol = 2)
     </code></pre>
 </div>
 <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/UMAP%20dat2.png" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
+    <img src="https://gist.github.com/assets/168087487/475b7c9f-9165-4191-85b7-2725c1575197" alt="UMAP vs KODAMA.UMAP" height="500" width="700">
 </p>
 
 <h3>KODAMA.umap clustering according to Androgen receptor(AR)</h3>
@@ -688,7 +688,7 @@ grid.arrange(plot7, ncol = 1)
     </code></pre>
 </div>
 <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/AR.png" alt="KODAMA.umap clustering according to Androgen receptor(AR)" height="500" width="700">
+    <img src="https://gist.github.com/assets/168087487/d3a9018f-39fe-4eb8-b899-8946116635f8" alt="KODAMA.umap clustering according to Androgen receptor(AR)" height="500" width="700">
 </p>
 
 <h3>KODAMA.umap clustering according to CD68</h3>
