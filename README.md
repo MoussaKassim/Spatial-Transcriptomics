@@ -593,7 +593,6 @@ tsne_out <- Rtsne(g3, perplexity = 10)
 metadata[, c("tSNE1", "tSNE2")] <- tsne_out$Y[, c(1,2)]
             </code></pre>
         </div>
-</section>
 
         <h3>Run UMAP</h3>
 <div class="code-container">
@@ -791,7 +790,4 @@ sidebarLinks.forEach(function (link) {
         });
 });
 
-         </script>
-</body>
-
-</html>
+       
