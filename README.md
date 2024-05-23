@@ -706,8 +706,9 @@ grid.arrange(plot8, ncol = 1)
 <p align="center">
     <img src="https://gist.github.com/assets/168087487/de9ec6ad-f997-445b-97cd-cb501031deb7" alt="KODAMA.umap clustering according to CD68" height="400" width="700">
 </p>
-                                                                                                             
-   <!-- Bootstrap Scripts -->
+         </script>
+    </div>
+    <!-- Bootstrap Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -770,24 +771,22 @@ sidebarLinks.forEach(function (link) {
             handleItemClick(item);
             addBackgroundOnHover(item);
         });
-       
-    var copyButton = document.getElementById('copyButton');
-    var codeBlock = document.querySelector('.code-container pre code');
+        // JavaScript for copying code and adding hover effect
+        function copyCode() {
+            var rCode = document.getElementById('rCode');
+            var codeText = rCode.innerText;
+            navigator.clipboard.writeText(codeText);
+        }
 
-    document.getElementById('copyButton1').addEventListener('click', function() {
-    var codeBlock = document.getElementById('codeBlock1');
-    var textToCopy = codeBlock.querySelector('code').innerText;
-    navigator.clipboard.writeText(textToCopy)
-        .then(function() {
-            // Changement de couleur du bouton pour indiquer que la copie a réussi
-            document.getElementById('copyButton1').classList.add('copied');
-            setTimeout(function() {
-                document.getElementById('copyButton1').classList.remove('copied');
+        var copyButton = document.getElementById('copyButton');
+        copyButton.addEventListener('click', function () {
+            copyCode();
+            copyButton.classList.add('copied');
+            setTimeout(function () {
+                copyButton.classList.remove('copied');
             }, 1000);
-        })
-        .catch(function(err) {
-            console.error('Failed to copy: ', err);
         });
-});
+    </script>
+</body>
 
-       
+</html>
