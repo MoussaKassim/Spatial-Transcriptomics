@@ -705,7 +705,7 @@ grid.arrange(plot8, ncol = 1)
     </code></pre>
 </div>
 <p align="center">
-    <img src="https://github.com/tkcaccia/KODAMA/blob/main/figures/CD68.png" alt="KODAMA.umap clustering according to CD68" height="400" width="700">
+    <img src="https://gist.github.com/assets/168087487/de9ec6ad-f997-445b-97cd-cb501031deb7" alt="KODAMA.umap clustering according to CD68" height="400" width="700">
 </p>
         </section>                                                                                                       
    <!-- Bootstrap Scripts -->
